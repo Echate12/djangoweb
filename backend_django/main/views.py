@@ -33,9 +33,14 @@ def get_whatsapp_link(request):
         email = data.get('email')
         type_ = data.get('type')
         message = data.get('message')
-
-        text = f"""الاسم: {name}\nالهاتف: {phone}\nالبريد: {email}\nنوع الاستشارة: {type_}\nالرسالة: {message}"""
+        lang = data.get('lang', 'ar')
+        if lang.startswith('fr'):
+            text = f"""Nom: {name}\nTéléphone: {phone}\nE-mail: {email}\nType de consultation: {type_}\nMessage: {message}"""
+        elif lang.startswith('en'):
+            text = f"""Name: {name}\nPhone: {phone}\nEmail: {email}\nConsultation Type: {type_}\nMessage: {message}"""
+        else:
+            text = f"""الاسم: {name}\nالهاتف: {phone}\nالبريد: {email}\nنوع الاستشارة: {type_}\nالرسالة: {message}"""
         encoded_text = urllib.parse.quote(text)
-        whatsapp_url = f'https://wa.me/212666462665?text={encoded_text}'
+        whatsapp_url = f'https://wa.me/212629916074?text={encoded_text}'
         return JsonResponse({'whatsapp_url': whatsapp_url})
     return JsonResponse({'error': 'Invalid request'}, status=400) 

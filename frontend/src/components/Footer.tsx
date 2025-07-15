@@ -45,7 +45,7 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3 space-x-reverse text-islamic-green-200">
                 <Phone className="w-5 h-5" />
-                <span>{t('footer_phone')}</span>
+                <span style={{ direction: 'ltr', unicodeBidi: 'bidi-override', textAlign: 'left', display: 'inline' }}>{t('footer_phone')}</span>
               </div>
               <div className="flex items-center space-x-3 space-x-reverse text-islamic-green-200">
                 <Mail className="w-5 h-5" />
@@ -53,7 +53,10 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3 space-x-reverse text-islamic-green-200">
                 <MapPin className="w-5 h-5" />
-                <span>{t('footer_address')}</span>
+                <div className="flex flex-col items-start">
+                  <span className="font-semibold">{t('footer_address')}</span>
+                  <span className="text-xs text-islamic-green-100">{t('footer_address_details')}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -99,13 +102,9 @@ const Footer = () => {
             <h4 className="text-xl font-bold font-amiri">{t('working_hours')}</h4>
           </div>
           <div className="grid md:grid-cols-2 gap-4 text-islamic-green-100">
-            <div>
-              <span className="font-semibold">{t('footer_saturday_thursday')}</span>
-              <span className="mr-2">{t('footer_saturday_thursday_hours')}</span>
-            </div>
-            <div>
-              <span className="font-semibold">{t('footer_friday')}</span>
-              <span className="mr-2">{t('footer_friday_hours')}</span>
+            <div className="flex flex-col items-center text-islamic-green-100 mb-2">
+              <span className="font-bold text-base mb-1">{t('footer_working_days')}</span>
+              <span style={{ direction: 'ltr', unicodeBidi: 'bidi-override' }} className="text-base font-bold">09:00 AM - 6:00 PM</span>
             </div>
           </div>
         </div>
@@ -122,12 +121,11 @@ const Footer = () => {
 
         {/* Bottom Footer */}
         <div className="border-t border-islamic-green-700 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-islamic-green-200 text-center md:text-right">
+          <div className="flex flex-col md:flex-row md:justify-between items-center text-center md:text-left space-y-4 md:space-y-0">
+            <div className="text-islamic-green-200">
               © {currentYear} {t('footer_copyright')}
             </div>
-            
-            <div className="flex items-center space-x-6 space-x-reverse">
+            <div className="flex flex-col md:flex-row md:items-center md:space-x-6 md:space-x-reverse space-y-2 md:space-y-0">
               <a
                 href="#"
                 className="text-islamic-green-200 hover:text-white transition-colors duration-200"

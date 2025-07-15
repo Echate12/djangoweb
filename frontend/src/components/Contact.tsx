@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const Contact = () => {
-  const { t } = useTranslation();
+const Contact = ({ selectedPlan }: { selectedPlan?: string | null }) => {
+  const { t, i18n } = useTranslation();
   const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
-    type: '',
     message: ''
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -25,7 +24,7 @@ const Contact = () => {
       const res = await fetch('http://127.0.0.1:8000/api/get_whatsapp_link/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify({ ...form, selectedPlan, lang: i18n.language })
       });
   
       if (res.ok) {
@@ -43,30 +42,44 @@ const Contact = () => {
     }
   };
   
-
+  const phoneDisplay = "+212 629916074";
+  const phoneLink = "+212629916074";
+  const whatsappLink = "212629916074";
   const contactInfo = [
     {
       icon: Phone,
       title: t('contact_us'),
-      details: ['+212 666462665'],
+      details: [
+        <span style={{ direction: 'ltr', unicodeBidi: 'bidi-override', textAlign: 'left', display: 'inline-block', width: '100%' }}>{phoneDisplay}</span>
+      ],
       color: 'islamic-green'
     },
     {
       icon: Mail,
       title: t('email'),
-      details: ['echmohamed2000@gmail.com', 'booking@alaroussihealing.com'],
+      details: ['rahalsahrawi@gmail.com'],
       color: 'islamic-gold'
     },
     {
       icon: MapPin,
       title: t('address'),
-      details: [t('address'), t('contact_paragraph')],
+      details: [
+        <div className="flex flex-col items-start">
+          <span className="font-semibold">{t('footer_address')}</span>
+          <span className="text-xs text-gray-400">{t('footer_address_details')}</span>
+        </div>
+      ],
       color: 'islamic-green'
     },
     {
       icon: Clock,
       title: t('working_hours'),
-      details: [t('working_hours'), t('contact_paragraph')],
+      details: [
+        <div className="flex flex-col items-start">
+          <span className="font-semibold">{t('footer_working_days')}</span>
+          <span className="text-xs">09:00 AM - 6:00 PM</span>
+        </div>
+      ],
       color: 'islamic-gold'
     }
   ];
@@ -124,14 +137,14 @@ const Contact = () => {
             {/* Quick Action Buttons */}
             <div className="mt-8 space-y-4">
               <a
-                href="tel:+212 666462665"
+                href={`tel:${phoneLink}`}
                 className="flex items-center justify-center space-x-3 space-x-reverse bg-gradient-islamic text-white px-6 py-4 rounded-2xl hover:shadow-lg transition-all duration-300 w-full"
               >
                 <Phone className="w-5 h-5" />
                 <span className="font-semibold">{t('call_now')}</span>
               </a>
               <a
-                href="https://wa.me/212666462665"
+                href={`https://wa.me/${whatsappLink}`}
                 className="flex items-center justify-center space-x-3 space-x-reverse bg-green-600 text-white px-6 py-4 rounded-2xl hover:shadow-lg transition-all duration-300 w-full"
               >
                 <MessageCircle className="w-5 h-5" />
@@ -145,7 +158,11 @@ const Contact = () => {
             <h3 className="text-3xl font-bold text-islamic-green-800 mb-8 font-amiri">
               {t('send_message')}
             </h3>
-            
+            {selectedPlan && (
+              <div className="mb-4 p-4 bg-islamic-green-50 border-l-4 border-islamic-green-500 rounded">
+                <span className="font-semibold text-islamic-green-800">{t('plan_basic_name') === selectedPlan ? t('plan_basic_name') : selectedPlan}</span>
+              </div>
+            )}
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
@@ -191,26 +208,6 @@ const Contact = () => {
                   placeholder="بريدك الإلكتروني"
                   required
                 />
-              </div>
-              
-              <div>
-                <label className="block text-islamic-green-800 font-semibold mb-2">
-                  {t('consultation_type')}
-                </label>
-                <select
-                  name="type"
-                  value={form.type}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-islamic-green-500 focus:ring-2 focus:ring-islamic-green-200 transition-all duration-200"
-                  required
-                >
-                  <option value="">اختر نوع الاستشارة</option>
-                  <option value="رقية شرعية عامة">رقية شرعية عامة</option>
-                  <option value="علاج من العين والحسد">علاج من العين والحسد</option>
-                  <option value="علاج من السحر">علاج من السحر</option>
-                  <option value="علاج نفسي وروحي">علاج نفسي وروحي</option>
-                  <option value="استشارة أخرى">استشارة أخرى</option>
-                </select>
               </div>
               
               <div>

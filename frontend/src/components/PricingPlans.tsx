@@ -2,12 +2,12 @@ import React from 'react';
 import { Check, Video, Headphones, Crown, Star, Clock, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const PricingPlans = () => {
+const PricingPlans = ({ onPlanSelect }: { onPlanSelect?: (planName: string) => void }) => {
   const { t } = useTranslation();
   const plans = [
     {
       name: t('plan_basic_name'),
-      price: '21',
+      price: '31',
       currency: t('currency'),
       duration: t('plan_basic_duration'),
       icon: Video,
@@ -40,7 +40,7 @@ const PricingPlans = () => {
     },
     {
       name: t('plan_full_name'),
-      price: '99',
+      price: '120',
       currency: t('currency'),
       duration: t('plan_full_duration'),
       icon: Star,
@@ -57,7 +57,7 @@ const PricingPlans = () => {
     },
     {
       name: t('plan_diamond_name'),
-      price: '79',
+      price: '99',
       currency: t('currency'),
       duration: t('plan_diamond_duration'),
       icon: Crown,
@@ -171,7 +171,14 @@ const PricingPlans = () => {
                 </div>
 
                 {/* CTA Button */}
-                <button className={`${colors.button} w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg`}>
+                <button
+                  className={`${colors.button} w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg`}
+                  onClick={() => {
+                    if (onPlanSelect) onPlanSelect(plan.name);
+                    const contactSection = document.getElementById('contact');
+                    if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   {t('plans_cta')}
                 </button>
               </div>

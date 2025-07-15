@@ -42,6 +42,12 @@ const Header = () => {
               >
                 English
               </button>
+              <button
+                onClick={() => i18n.changeLanguage('fr')}
+                className={`px-2 py-1 rounded ${i18n.language === 'fr' ? 'bg-islamic-green-700 text-white' : 'bg-gray-100 text-gray-700'}`}
+              >
+                Français
+              </button>
             </div>
           </div>
 
