@@ -1,6 +1,7 @@
 # --- Web Framework ---
 Django>=4.2,<5
 gunicorn
+django-cors-headers
 
 # --- Database ---
 psycopg2-binary
