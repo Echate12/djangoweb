@@ -176,7 +176,20 @@ const PricingPlans = ({ onPlanSelect }: { onPlanSelect?: (planName: string) => v
                   onClick={() => {
                     if (onPlanSelect) onPlanSelect(plan.name);
                     const contactSection = document.getElementById('contact');
-                    if (contactSection) contactSection.scrollIntoView({ behavior: 'smooth' });
+                    if (contactSection) {
+                      // Find the form inside the contact section
+                      const form = contactSection.querySelector('form');
+                      if (form) {
+                        const formRect = form.getBoundingClientRect();
+                        const formY = formRect.top + window.pageYOffset;
+                        // Place the form 20px from the top of the viewport
+                        window.scrollTo({ top: formY - 20, behavior: 'smooth' });
+                      } else {
+                        // fallback: scroll to contact section
+                        const y = contactSection.getBoundingClientRect().top + window.pageYOffset - 30;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                      }
+                    }
                   }}
                 >
                   {t('plans_cta')}
