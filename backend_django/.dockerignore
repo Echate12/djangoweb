@@ -1,3 +1,13 @@
-fly.toml
-.git/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
 *.sqlite3
+*.db
+.env
+node_modules/
+build/
+dist/
+*.egg-info/
+frontend/
