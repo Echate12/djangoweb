@@ -21,7 +21,7 @@ const Contact = ({ selectedPlan }: { selectedPlan?: string | null }) => {
     setStatus('sending');
   
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/get_whatsapp_link/', {
+      const res = await fetch('https://laaroussihealing.fly.dev/api/get_whatsapp_link/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, selectedPlan, lang: i18n.language })
