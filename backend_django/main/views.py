@@ -39,7 +39,7 @@ def get_whatsapp_link(request):
         elif lang.startswith('en'):
             text = f"""Name: {name}\nPhone: {phone}\nEmail: {email}\nConsultation Type: {type_}\nMessage: {message}"""
         else:
-            text = f"""الاسم: {name}\nالهاتف: {phone}\nالبريد: {email}\nنوع الاستشارة: {type_}\nالرسالة: {message}"""
+        text = f"""الاسم: {name}\nالهاتف: {phone}\nالبريد: {email}\nنوع الاستشارة: {type_}\nالرسالة: {message}"""
         encoded_text = urllib.parse.quote(text)
         whatsapp_url = f'https://wa.me/212629916074?text={encoded_text}'
         return JsonResponse({'whatsapp_url': whatsapp_url})
