@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.static import serve
 import json
 import urllib.parse
+from django.conf import settings
+import os
 
 
 def index(request):
@@ -16,7 +19,6 @@ def contact_api(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            # You can print data for debugging:
             print(data)
             return JsonResponse({'message': 'تم إرسال الرسالة بنجاح!'}, status=200)
         except Exception as e:
@@ -35,12 +37,29 @@ def get_whatsapp_link(request):
         message = data.get('message')
         lang = data.get('lang', 'ar')
         if lang.startswith('fr'):
-            text = f"""Nom: {name}\nTéléphone: {phone}\nE-mail: {email}\nType de consultation: {type_}\nMessage: {message}"""
+            text = f"""Nom: {name}
+Téléphone: {phone}
+E-mail: {email}
+Type de consultation: {type_}
+Message: {message}"""
         elif lang.startswith('en'):
-            text = f"""Name: {name}\nPhone: {phone}\nEmail: {email}\nConsultation Type: {type_}\nMessage: {message}"""
+            text = f"""Name: {name}
+Phone: {phone}
+Email: {email}
+Consultation Type: {type_}
+Message: {message}"""
         else:
-            text = f"""الاسم: {name}\nالهاتف: {phone}\nالبريد: {email}\nنوع الاستشارة: {type_}\nالرسالة: {message}"""
+            text = f"""الاسم: {name}
+الهاتف: {phone}
+البريد: {email}
+نوع الاستشارة: {type_}
+الرسالة: {message}"""
         encoded_text = urllib.parse.quote(text)
         whatsapp_url = f'https://wa.me/212629916074?text={encoded_text}'
         return JsonResponse({'whatsapp_url': whatsapp_url})
-    return JsonResponse({'error': 'Invalid request'}, status=400) 
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+# Serve static files
+@csrf_exempt
+def serve_static(request, path):
+    return serve(request, path, document_root=settings.STATIC_ROOT)
